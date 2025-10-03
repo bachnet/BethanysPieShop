@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Models
@@ -16,7 +16,9 @@ namespace BethanysPieShop.Models
         {
             get
             {
-                return _dbContext.Pies.Include(c => c.Category);
+                return _dbContext.Pies
+                    .AsNoTracking()
+                    .Include(c => c.Category);
             }
         }
 
@@ -24,18 +26,27 @@ namespace BethanysPieShop.Models
         {
             get
             {
-                return _dbContext.Pies.Include(x => x.Category).Where(p => p.IsPieOfTheWeek);
+                return _dbContext.Pies
+                    .AsNoTracking()
+                    .Include(x => x.Category)
+                    .Where(p => p.IsPieOfTheWeek);
             }
         }
 
         public Pie? GetPieById(int pieId)
         {
-            return _dbContext.Pies.Include(x => x.Category).FirstOrDefault(x => x.PieId == pieId);
+            return _dbContext.Pies
+                .AsNoTracking()
+                .Include(x => x.Category)
+                .FirstOrDefault(x => x.PieId == pieId);
         }
 
         public IEnumerable<Pie> SearchPies(string searchQuery)
         {
-            return _dbContext.Pies.Include(x => x.Category).Where(x => x.Name == searchQuery);
+            return _dbContext.Pies
+                .AsNoTracking()
+                .Include(x => x.Category)
+                .Where(x => x.Name == searchQuery);
         }
     }
 }
